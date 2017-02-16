@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="222.266mm" height="23.0779mm" version="1.0" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"
+viewBox="0 0 22074 2292"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+    <linearGradient id="id0" gradientUnits="userSpaceOnUse" x1="21432.4" y1="600.979" x2="20320.1" y2="1686.15">
+     <stop offset="0" stop-opacity="1" stop-color="#96989A"/>
+     <stop offset="0.109804" stop-opacity="1" stop-color="#FEFEFE"/>
+     <stop offset="0.341176" stop-opacity="1" stop-color="#D2D3D5"/>
+     <stop offset="0.6" stop-opacity="1" stop-color="#96989A"/>
+     <stop offset="0.85098" stop-opacity="1" stop-color="#FEFEFE"/>
+     <stop offset="1" stop-opacity="1" stop-color="#BDBFC1"/>
+    </linearGradient>
+    <linearGradient id="id1" gradientUnits="userSpaceOnUse" x1="2641.68" y1="602.946" x2="3753.86" y2="1684.18">
+     <stop offset="0" stop-opacity="1" stop-color="#96989A"/>
+     <stop offset="0.109804" stop-opacity="1" stop-color="#FEFEFE"/>
+     <stop offset="0.341176" stop-opacity="1" stop-color="#D2D3D5"/>
+     <stop offset="0.6" stop-opacity="1" stop-color="#96989A"/>
+     <stop offset="0.85098" stop-opacity="1" stop-color="#FEFEFE"/>
+     <stop offset="1" stop-opacity="1" stop-color="#BDBFC1"/>
+    </linearGradient>
+    <linearGradient id="id2" gradientUnits="userSpaceOnUse" x1="272.215" y1="423.498" x2="1965.83" y2="1863.63">
+     <stop offset="0" stop-opacity="1" stop-color="#A9ABAE"/>
+     <stop offset="0.188235" stop-opacity="1" stop-color="#FEFEFE"/>
+     <stop offset="0.411765" stop-opacity="1" stop-color="#848688"/>
+     <stop offset="0.639216" stop-opacity="1" stop-color="#FEFEFE"/>
+     <stop offset="1" stop-opacity="1" stop-color="#A9ABAE"/>
+    </linearGradient>
+ </defs>
+ <g id="Camada_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <line fill="none" x1="2128" y1="2292" x2="20997" y2= "2292" />
+  <path fill="none" stroke="#373435" stroke-width="19.8625" d="M2096 548l19875 0c51,0 93,37 93,82l0 1027c0,45 -42,82 -93,82l-19875 0c-52,0 -93,-37 -93,-82l0 -1027c0,-45 41,-82 93,-82z"/>
+  <g id="_404032920">
+   <path fill="url(#id0)" stroke="#727376" stroke-width="7.56761" d="M21509 468l-1264 0c-35,0 -63,28 -63,63l0 547c-2,5 -3,11 -3,17 0,29 23,52 51,52 7,0 13,-2 19,-4l1255 0c6,2 12,4 19,4 28,0 51,-23 51,-52 0,-4 -1,-8 -2,-13l0 -551c0,-35 -28,-63 -63,-63zm14 691c28,0 51,23 51,51 0,4 -1,9 -2,13l0 533c0,35 -28,63 -63,63l-1264 0c-35,0 -63,-28 -63,-63l0 -528c-2,-6 -3,-12 -3,-18 0,-28 23,-51 51,-51 6,0 12,1 17,3l1258 0c6,-2 12,-3 18,-3z"/>
+   <path fill="url(#id1)" stroke="#727376" stroke-width="7.56761" d="M2566 468l1264 0c35,0 63,28 63,63l0 1225c0,35 -28,63 -63,63l-1264 0c-35,0 -63,-28 -63,-63l0 -1225c0,-35 28,-63 63,-63z"/>
+   <path fill="none" stroke="#727376" stroke-width="7.56761" d="M1208 4c434,0 814,217 1026,544l-147 0c-10,0 -19,0 -28,2l1 0c-194,-245 -503,-403 -852,-403 -586,0 -1061,446 -1061,997 0,550 475,996 1061,996 349,0 658,-158 852,-402l-1 -1c9,2 18,2 28,2l147 0c-212,327 -592,544 -1026,544 -665,0 -1204,-510 -1204,-1139 0,-630 539,-1140 1204,-1140z"/>
+  </g>
+ </g>
+</svg>

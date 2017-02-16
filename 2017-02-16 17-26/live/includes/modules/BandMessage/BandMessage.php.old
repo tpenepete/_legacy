@@ -1,0 +1,250 @@
+<?php
+
+defined('TPT_INIT') or die('access denied');
+
+class tpt_module_BandMessage extends tpt_Module {
+    public $out = array();
+    public $in = array();
+    public $idstr = array();
+
+    function __construct(&$vars, $name, $moduleClassFile, $moduleClass, $moduleTable) {
+        $fields = array(
+                //db field name|field type|length|options|storage options|control|ctrAttr|default|label|index by|split keys|template
+            new tpt_ModuleField('id',    'n', null, 'ai', '',         'sp', '', '', '',           true, false,  'LC'),
+            new tpt_ModuleField('idstr',  's', 16,  '',   '',         'tf', ' style="width: 170px;"', '0', 'idstr', false, false, 'LC'),
+            new tpt_ModuleField('line2',  'ti', '',  '',   '',         'tf', ' style="width: 170px;"', '', 'Line 2 Message?', false, false, 'LC'),
+            new tpt_ModuleField('back',  'ti', '',  '',   '',         'tf', ' style="width: 170px;"', '', 'Back Message?', false, false, 'LC'),
+            new tpt_ModuleField('inside',  'ti', '',  '',   '',         'tf', ' style="width: 170px;"', '', 'Inside Message?', false, false, 'LC'),
+            new tpt_ModuleField('preview_id',  's', 32,  '',   '',         'tf', ' style="width: 170px;"', '', 'Preview IMG Id', false, false, 'LC'),
+            new tpt_ModuleField('ctr_name',  's', 32,  '',   '',         'tf', ' style="width: 170px;"', '', 'Control Name Attr', false, false, 'LC'),
+            new tpt_ModuleField('cont_id',  's', 32,  '',   '',         'tf', ' style="width: 170px;"', '', 'Container Id', false, false, 'LC'),
+            new tpt_ModuleField('line2_cont_id',  's', 32,  '',   '',         'tf', ' style="width: 170px;"', '', 'Line2 Container Id', false, false, 'LC'),
+	    new tpt_ModuleField('line2_db_id',  'i', '',  '',   '',         'tf', ' style="width: 170px;"', '', 'Line2 DB Id', false, false, 'LC'),
+            new tpt_ModuleField('title',  's', 64,  '',   '',         'tf', ' style="width: 170px;"', '', 'Message Title', false, false, 'LC'),
+            new tpt_ModuleField('jsvarname_timeout',  's', 32,  '',   '',         'tf', ' style="width: 170px;"', '', 'Preview JS Timeout Varname', false, false, 'LC'),
+            new tpt_ModuleField('cfgvarname_default_message',  's', 32,  '',   '',         'tf', ' style="width: 170px;"', '', 'Default Message Config Constant Name', false, false, 'LC'),
+            new tpt_ModuleField('cfgvarname_pointsize',  's', 32,  '',   '',         'tf', ' style="width: 170px;"', '', 'Default Message Pointsize Config Constant Name', false, false, 'LC'),
+            new tpt_ModuleField('var1',  's', 32,  '',   '',         'tf', ' style="width: 170px;"', '', 'var1', false, false, 'LC'),
+            new tpt_ModuleField('var2',  's', 32,  '',   '',         'tf', ' style="width: 170px;"', '', 'var2', false, false, 'LC'),
+            new tpt_ModuleField('var3',  's', 32,  '',   '',         'tf', ' style="width: 170px;"', '', 'var3', false, false, 'LC'),
+            //'<div class="tpt_admin_module_section float-left" style="border: 2px solid #FFF;">',
+            //'</div>',
+            //'<div class="float-left padding-top-20 padding-bottom-20 padding-left-10 padding-right-10" style="background-color: #FFF;"><div class="display-inline-block height-10 width-80" style="background-color: #`HEX`; border: 1px solid #000;"></div></div>',
+            //'<div class="float-left" style="background-color: #`HEX`; border: 1px solid #000;"><img src="'.$vars['config']['resourceurl'].'/images/Band-Transperent-Preview.png" class="width-80" /></div>',
+            //'<div class="float-left" style="background-color: #`HEX`; border: 1px solid #000;"><img src="'.$vars['config']['resourceurl'].'/images/Transparent-Swirl-Band-Preview.png" class="width-80" /></div>'
+        );
+	
+	
+        $this->out = $vars['db']['handler']->getData($vars, $moduleTable, '*', ' `inside`=0 ORDER BY `id` ASC', 'idstr', false);
+        $this->in = $vars['db']['handler']->getData($vars, $moduleTable, '*', ' `inside`!=0 ORDER BY `id` ASC', 'idstr', false);
+	$this->idstr = $this->out+$this->in;
+	
+        parent::__construct($vars, $name, $moduleClassFile, $moduleClass, $moduleTable, $fields, 'id');
+    }
+
+    
+    function userEndData(&$vars) {
+        $_temp = array();
+        $rArr = $this->moduleData['id'];
+        foreach($rArr as $item) {
+            $_temp[$item['id']] = array('name'=>$item['name'], 'blank'=>$item['blank']);
+        }
+        //var_dump($rArr);die();
+
+        $rArr = $_temp;
+        //var_dump($rArr);die();
+        return $rArr;
+    }
+
+
+
+    function BandMessage_Control(&$vars, $idstr, $pgconf=array()) {
+	if(empty($idstr)) {
+	    return false;
+	}
+	$mrow = false;
+	if(!($mrow = $this->idstr[$idstr])) {
+	    return false;
+	}
+	if(!empty($mrow['line2'])) {
+	    return false;
+	}
+	
+	
+	extract($pgconf);
+	$types_module = $vars['modules']['handler']->modules['BandType'];
+	$data_module = $vars['modules']['handler']->modules['BandData'];
+	$sizes_module = $vars['modules']['handler']->modules['BandSize'];
+	
+	$drow = $data_module->typeStyle[$pgType][$pgStyle];
+	if(empty($drow)) {
+	    return false;
+	}
+	
+	$const = get_defined_constants();
+	
+	extract($mrow);
+	
+	
+
+	
+
+	$alt_label = '';
+	$show = false;
+	$ctr_display = true;
+	$message = false;
+	if(isset($_GET[$ctr_name]) || isset($_POST[$ctr_name])) {
+	    if(isset($_GET[$ctr_name])) {
+		$message = $_GET[$ctr_name];
+	    } else if(isset($_POST[$ctr_name])) {
+		$message = $_POST[$ctr_name];
+	    }
+	    
+	    if(!empty($drow['text_back_msg']) || empty($back) || (!empty($message) && ($message != $const[$cfgvarname_default_message]))) {
+		$show = true;
+	    }
+	} else {
+	    //tpt_dump($back);
+	    //tpt_dump($drow['text_back_msg']);
+	    //tpt_dump($drow['text_back_msg']);
+	    
+	    if(empty($back) || (!empty($drow['text_back_msg']) && empty($drow['text_continuous_msg']))) {
+		$show = true;
+	    }
+	    $message = $const[$cfgvarname_default_message];
+	}
+	
+	$lntogglefuncparams = 'this';
+	if(!empty($drow['writable'])) {
+	    $lntogglefuncparams = 'this, true';
+	}
+	
+	$l2_show = false;
+	$l2_message = false;
+	$line2_mrow = $this->idstr[$idstr.'2'];
+	if(!empty($line2_mrow) && ($drow['text_lines_num'] > 1)) {
+	    extract($line2_mrow, EXTR_PREFIX_ALL, 'l2');
+	    //$arr = array_keys(get_defined_vars());
+	    //$arr = get_defined_constants();
+	    //var_dump($arr);
+	    //tpt_dump($arr, true);
+	    //tpt_dump(get_de(), true);
+	    
+	    if(!empty($_GET[$l2_ctr_name])) {
+		$l2_show = true;
+		$l2_message = $_GET[$l2_ctr_name];
+	    } else if(!empty($_POST[$l2_ctr_name])) {
+		$l2_show = true;
+		$l2_message = $_POST[$l2_ctr_name];
+	    } else {
+		$l2_show = true;
+		$l2_message = $const[$l2_cfgvarname_default_message];
+	    }
+	}
+	
+	//tpt_dump($show);
+	//if($back) {
+	//    die();
+	//}
+	if(!empty($drow['writable'])) {
+	    //tpt_dump($drow['writable_class']);
+	    if(in_array($drow['writable_class'], array(1,2,4,5))) {
+		if(empty($back)) {
+		    $ctr_display = false;
+		    $alt_label = '<div class="amz_brown font-size-16 font-weight-bold">Writable Strip (only available in White)</div>';
+		}
+	    } else {
+		if(!empty($back)) {
+		    $ctr_display = false;
+		    $alt_label = '<div class="amz_brown font-size-16 font-weight-bold">Writable Strip (only available in White)</div>';
+		}
+	    }
+	}
+	
+	//tpt_dump($show);
+	//if($back) {
+	//    die();
+	//}
+	
+	if(!empty($drow['blank'])) {
+	    $l2_show = false;
+	    $ctr_display = false;
+	}
+	
+	$content = '';
+	
+	
+	if($show) {
+	    $UDMessage = urldecode($message);
+	    
+	    if($back) {
+$content .= <<< EOT
+<div class="silver-line-separator clear-both"></div>
+EOT;
+	    }
+$content .= <<< EOT
+<div class="clear"></div>
+
+<div id="$cont_id" class="$cont_class">
+    <div class="background-position-LC background-repeat-no-repeat" style="/*background-image: url($tpt_res_url/images/input-field-1-left.png);*/">
+	<div style="font-family: Arial;height: 20px;padding-top: 10px;" class="amz_brown font-size-14 font-weight-bold">$title:&nbsp;</div>
+	$alt_label
+EOT;
+	    if($ctr_display) {
+$content .= <<< EOT
+	<div class="$display_class padding-right-60 background-position-RC background-repeat-no-repeat" style="background-image: url($tpt_res_url/images/input-bg-ultra-long-2.png);background-position: left top; cursor: pointer;" onclick="tpt_pg_generate_prevew_short('$preview_id');" title="Update $title Preview">
+	    <div class="background-repeat-repeat-x" style="/*background-image: url($tpt_res_url/images/input-field-1-mid.png);*/">
+		<input oninput="clearTimeout($jsvarname_timeout);$jsvarname_timeout = setTimeout(function(){tpt_pg_generate_prevew_short('$preview_id');}, 500);" onpropertychange="clearTimeout($jsvarname_timeout);$jsvarname_timeout = setTimeout(function(){tpt_pg_generate_prevew_short('$preview_id');}, 500);" onfocus="removeClass(this.parentNode.parentNode.parentNode.parentNode, 'invalid_field');activate_text_field(this);tpt_pg_generate_prevew_short('$preview_id');" oncontextmenu="return false" autocomplete="off" readonly="readonly" id="$ctr_id" class="overflow-visible padding-0 border-none height-32 line-height-26 padding-top-4 padding-bottom-6 font-size-12 width-282 margin-left-10" type="text" name="$ctr_name" value="$UDMessage" title="$title" style="/* background-color: #FFF;*/ background: transparent none;outline: 0; " />
+	    </div>
+	</div>
+EOT;
+	    }
+$content .= <<< EOT
+    </div>
+EOT;
+
+//if ($pgType != 1) //2-ри ред за текста да се добавя само ако не е Custom 1/4" Thin Wristband Builder
+//{
+    
+	    if(!empty($line2_mrow) && $l2_show && $ctr_display) {
+		$addlineid = $idstr.'2add';
+		$rmlineid = $idstr.'2remove';
+		$l2_UDMessage = urldecode($l2_message);
+$content .= <<< EOT
+    <div class="font-size-12 clearFix $lndisplay">
+	<div class="float-left" id="$addlineid">
+	    <a href="javascript:void(0);" onclick="add_text_line($lntogglefuncparams);" class="plain-link">[Add 2nd line of text]</a>
+	</div>
+	<div class="float-right display-none" id="$rmlineid">
+	    <a href="javascript:void(0);" onclick="remove_text_line($lntogglefuncparams);" class="amz_red plain-link">[X]</a>
+	</div>
+    </div>
+EOT;
+
+
+$content .= <<< EOT
+    <div id="$line2_cont_id" class="display-none">
+	<div class="background-position-LC background-repeat-no-repeat" style="/*background-image: url($tpt_res_url/images/input-field-1-left.png);*/">
+	    <div class="padding-right-60 background-position-RC background-repeat-no-repeat" style="background-image: url($tpt_res_url/images/input-bg-ultra-long-2.png);background-position: left top; cursor: pointer;" onclick="tpt_pg_generate_prevew_short('$l2_preview_id');" title="Update $l2_title Preview">
+		<div class="background-repeat-repeat-x" style="/*background-image: url($tpt_res_url/images/input-field-1-mid.png);*/">
+		    <input disabled="disabled" oninput="clearTimeout($l2_jsvarname_timeout);$l2_jsvarname_timeout = setTimeout(function(){tpt_pg_generate_prevew_short('$l2_preview_id');}, 500);" onpropertychange="clearTimeout($l2_jsvarname_timeout);$l2_jsvarname_timeout = setTimeout(function(){tpt_pg_generate_prevew_short('$l2_preview_id');}, 500);" onfocus="removeClass(this.parentNode.parentNode.parentNode.parentNode, 'invalid_field');activate_text_field(this);tpt_pg_generate_prevew_short('$l2_preview_id');" oncontextmenu="return false" autocomplete="off" readonly="readonly" id="$l2_ctr_id" class="overflow-visible padding-0 border-none height-32 line-height-26 padding-top-4 padding-bottom-6 font-size-12 width-282 margin-left-10" type="text" name="$l2_ctr_name" value="$l2_UDMessage" title="$l2_title" style="/* background-color: #FFF;*/ background: transparent none;outline: 0; " />
+		</div>
+	    </div>
+	</div>
+    </div>
+    $fl2ext
+EOT;
+	    }
+
+$content .= <<< EOT
+</div>
+EOT;
+	}
+
+	return $content;
+	
+    }
+
+}
+
+?>

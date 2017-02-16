@@ -1,0 +1,4 @@
+#!/bin/sh
+#export PATH="/usr/local/jdk/bin:/usr/lib64/qt-3.3/bin:/usr/lib/courier-imap/sbin:/usr/lib/courier-imap/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/usr/X11R6/bin:/root/bin:/usr/lib64"
+/usr/local/bin/convert -size 221x25 -background transparent -fill white -stroke none -gravity center -trim -font /home/amazingw/public_html/joomla/templay/fonts/Bitter-Regular.ttf label:"Bitter-Regular.ttf" png:-
+#/usr/local/bin/convert -size 221x25 -background transparent -fill white -stroke none -gravity center -trim -font /home/amazingw/public_html/joomla/templay/fonts/Bitter-Regular.ttf label:"Bitter-Regular.ttf" ee.png
